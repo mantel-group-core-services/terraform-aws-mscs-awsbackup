@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "service_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "AWS"
+      type        = "Service"
       identifiers = ["backup.amazonaws.com"]
     }
     effect = "Allow"
