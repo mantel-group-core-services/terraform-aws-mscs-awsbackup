@@ -1,0 +1,28 @@
+include:
+  - template: Terraform/Module-Base.gitlab-ci.yml
+  - component: gitlab.ms.mantelgroup.com.au/managedservices/gitlab/components/terraform/fmt@~latest
+  - component: gitlab.ms.mantelgroup.com.au/managedservices/gitlab/components/terraform/validate@~latest
+
+stages: [validate, deploy]
+
+default:
+  tags: [docker]
+
+trivy_iac_scan:
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  stage: validate
+  script:
+    - trivy config --severity CRITICAL,MEDIUM ./
+  allow_failure: false
+  only:
+    - merge_requests
+    - master
+
+terraform-module:deploy:
+  extends: .terraform-module:deploy
+  variables:
+    TERRAFORM_MODULE_SYSTEM: aws
+  rules:
+    - if: $CI_COMMIT_TAG
