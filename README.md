@@ -16,7 +16,7 @@ This repository has `pre-commit` hooks so installing `pre-commit` is required. I
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.69.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.85.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
 
 ## Modules
@@ -54,6 +54,7 @@ No modules.
 | [random_id.main](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.kms_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.service_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.service_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.vault_access_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
@@ -77,11 +78,11 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_backup_vault_arn"></a> [backup\_vault\_arn](#output\_backup\_vault\_arn) | n/a |
 | <a name="output_iam_role_arn"></a> [iam\_role\_arn](#output\_iam\_role\_arn) | n/a |
-| <a name="output_kms_key_alias_arn"></a> [kms\_key\_alias\_arn](#output\_kms\_key\_alias\_arn) | n/a |
-| <a name="output_kms_key_alias_id"></a> [kms\_key\_alias\_id](#output\_kms\_key\_alias\_id) | n/a |
-| <a name="output_kms_key_alias_name"></a> [kms\_key\_alias\_name](#output\_kms\_key\_alias\_name) | n/a |
-| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | n/a |
-| <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | n/a |
+| <a name="output_vault_arn"></a> [vault\_arn](#output\_vault\_arn) | n/a |
+| <a name="output_vault_kms_key_alias_arn"></a> [vault\_kms\_key\_alias\_arn](#output\_vault\_kms\_key\_alias\_arn) | n/a |
+| <a name="output_vault_kms_key_alias_id"></a> [vault\_kms\_key\_alias\_id](#output\_vault\_kms\_key\_alias\_id) | n/a |
+| <a name="output_vault_kms_key_alias_name"></a> [vault\_kms\_key\_alias\_name](#output\_vault\_kms\_key\_alias\_name) | n/a |
+| <a name="output_vault_kms_key_arn"></a> [vault\_kms\_key\_arn](#output\_vault\_kms\_key\_arn) | n/a |
+| <a name="output_vault_kms_key_id"></a> [vault\_kms\_key\_id](#output\_vault\_kms\_key\_id) | n/a |
 <!-- END_TF_DOCS -->

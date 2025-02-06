@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "main" {
   name               = "mgms_cs_backup_role"
-  path               = "mgms/"
+  path               = "/mgms/"
   assume_role_policy = data.aws_iam_policy_document.service_assume_role_policy.json
   tags = merge(
     var.additional_tags,
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "service_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "AWS"
+      type        = "Service"
       identifiers = ["backup.amazonaws.com"]
     }
     effect = "Allow"
@@ -47,8 +47,8 @@ data "aws_iam_policy_document" "service_role_policy" {
 
 resource "aws_iam_policy" "main" {
   depends_on  = [aws_kms_key.main]
-  name        = "mg_cs_backup_role_policy-${random_id.main}"
-  path        = "mgms/"
+  name        = "mg_cs_backup_role_policy-${random_id.main.hex}"
+  path        = "/mgms/"
   description = "IAM Policy to allow the AWS Backup Service Role permissions to the Vault's KMS Key"
   policy      = data.aws_iam_policy_document.service_role_policy.json
 
