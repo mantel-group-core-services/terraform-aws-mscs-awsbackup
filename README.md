@@ -1,6 +1,8 @@
-# core-services-example-module
+# core-services / aws-backup
 
-Example of proposed structure for core services Terraform Modules. Coding standards can be found in `STANDARDS.md`.
+This module is used to deploy the per-account AWS Backup solution following the Core Services pattern.
+
+For more information on Core Services, including the coding standards that are used check out he Confluence space: https://mantelgroup.atlassian.net/wiki/spaces/MS/pages/5166432523/Core+Services
 
 This repository has `pre-commit` hooks so installing `pre-commit` is required. Instructions can be found here: https://pre-commit.com/
 
