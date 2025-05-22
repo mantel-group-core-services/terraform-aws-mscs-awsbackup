@@ -40,9 +40,11 @@ resource "aws_backup_plan" "continuous" {
 
   name = "${var.continuous_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.continuous_backup_plan_config.completion_window
     rule_name         = "${var.continuous_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.continuous_backup_plan_config.schedule
+    start_window      = var.continuous_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.continuous_backup_plan_config.retention_in_days
     }
@@ -73,9 +75,11 @@ resource "aws_backup_plan" "daily" {
 
   name = "${var.daily_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.daily_backup_plan_config.completion_window
     rule_name         = "${var.daily_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.daily_backup_plan_config.schedule
+    start_window      = var.daily_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.daily_backup_plan_config.retention_in_days
     }
@@ -106,9 +110,11 @@ resource "aws_backup_plan" "hourly" {
 
   name = "${var.hourly_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.hourly_backup_plan_config.completion_window
     rule_name         = "${var.hourly_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.hourly_backup_plan_config.schedule
+    start_window      = var.hourly_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.hourly_backup_plan_config.retention_in_days
     }
@@ -139,9 +145,11 @@ resource "aws_backup_plan" "weekly" {
 
   name = "${var.weekly_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.weekly_backup_plan_config.completion_window
     rule_name         = "${var.weekly_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.weekly_backup_plan_config.schedule
+    start_window      = var.weekly_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.weekly_backup_plan_config.retention_in_days
     }
@@ -172,9 +180,11 @@ resource "aws_backup_plan" "monthly" {
 
   name = "${var.monthly_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.monthly_backup_plan_config.completion_window
     rule_name         = "${var.monthly_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.monthly_backup_plan_config.schedule
+    start_window      = var.monthly_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.monthly_backup_plan_config.retention_in_days
     }
@@ -205,9 +215,11 @@ resource "aws_backup_plan" "yearly" {
 
   name = "${var.yearly_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.yearly_backup_plan_config.completion_window
     rule_name         = "${var.yearly_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.yearly_backup_plan_config.schedule
+    start_window      = var.yearly_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.yearly_backup_plan_config.retention_in_days
     }
@@ -238,9 +250,11 @@ resource "aws_backup_plan" "unscoped" {
 
   name = "${var.unscoped_backup_plan_config.name}_${random_id.main.id}"
   rule {
+    completion_window = var.unscoped_backup_plan_config.completion_window
     rule_name         = "${var.unscoped_backup_plan_config.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = var.unscoped_backup_plan_config.schedule
+    start_window      = var.unscoped_backup_plan_config.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = var.unscoped_backup_plan_config.retention_in_days
     }
@@ -274,9 +288,11 @@ resource "aws_backup_plan" "additional_plans" {
 
   name = "${each.value.name}_${random_id.main.id}"
   rule {
+    completion_window = each.value.completion_window
     rule_name         = "${each.value.name}_${random_id.main.id}"
-    target_vault_name = aws_backup_vault.main.name
     schedule          = each.value.schedule
+    start_window      = each.value.start_window
+    target_vault_name = aws_backup_vault.main.name
     lifecycle {
       delete_after = each.value.retention_in_days
     }
