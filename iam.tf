@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "service_role_policy" {
 
 resource "aws_iam_policy" "main" {
   depends_on  = [aws_kms_key.main]
-  name        = "mg_cs_backup_role_policy-${random_id.main.hex}"
+  name        = "mg_cs_backup_role_policy"
   path        = "/mgms/"
   description = "IAM Policy to allow the AWS Backup Service Role permissions to the Vault's KMS Key"
   policy      = data.aws_iam_policy_document.service_role_policy.json
