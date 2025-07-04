@@ -1,5 +1,5 @@
 resource "aws_backup_vault" "main" {
-  name        = "${var.vault_name}_${random_id.main.id}"
+  name        = var.vault_name
   kms_key_arn = aws_kms_key.main.arn
 
   lifecycle {
@@ -38,10 +38,10 @@ resource "aws_backup_vault_policy" "main" {
 resource "aws_backup_plan" "continuous" {
   count = var.continuous_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.continuous_backup_plan_config.name}_${random_id.main.id}"
+  name = var.continuous_backup_plan_config.name
   rule {
     completion_window = var.continuous_backup_plan_config.completion_window
-    rule_name         = "${var.continuous_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.continuous_backup_plan_config.name
     schedule          = var.continuous_backup_plan_config.schedule
     start_window      = var.continuous_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -60,7 +60,7 @@ resource "aws_backup_selection" "continuous" {
   count = var.continuous_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.continuous_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.continuous_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.continuous[0].id
 
   selection_tag {
@@ -73,10 +73,10 @@ resource "aws_backup_selection" "continuous" {
 resource "aws_backup_plan" "daily" {
   count = var.daily_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.daily_backup_plan_config.name}_${random_id.main.id}"
+  name = var.daily_backup_plan_config.name
   rule {
     completion_window = var.daily_backup_plan_config.completion_window
-    rule_name         = "${var.daily_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.daily_backup_plan_config.name
     schedule          = var.daily_backup_plan_config.schedule
     start_window      = var.daily_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -95,7 +95,7 @@ resource "aws_backup_selection" "daily" {
   count = var.daily_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.daily_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.daily_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.daily[0].id
 
   selection_tag {
@@ -108,10 +108,10 @@ resource "aws_backup_selection" "daily" {
 resource "aws_backup_plan" "hourly" {
   count = var.hourly_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.hourly_backup_plan_config.name}_${random_id.main.id}"
+  name = var.hourly_backup_plan_config.name
   rule {
     completion_window = var.hourly_backup_plan_config.completion_window
-    rule_name         = "${var.hourly_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.hourly_backup_plan_config.name
     schedule          = var.hourly_backup_plan_config.schedule
     start_window      = var.hourly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -130,7 +130,7 @@ resource "aws_backup_selection" "hourly" {
   count = var.hourly_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.hourly_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.hourly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.hourly[0].id
 
   selection_tag {
@@ -143,10 +143,10 @@ resource "aws_backup_selection" "hourly" {
 resource "aws_backup_plan" "weekly" {
   count = var.weekly_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.weekly_backup_plan_config.name}_${random_id.main.id}"
+  name = var.weekly_backup_plan_config.name
   rule {
     completion_window = var.weekly_backup_plan_config.completion_window
-    rule_name         = "${var.weekly_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.weekly_backup_plan_config.name
     schedule          = var.weekly_backup_plan_config.schedule
     start_window      = var.weekly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -165,7 +165,7 @@ resource "aws_backup_selection" "weekly" {
   count = var.weekly_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.weekly_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.weekly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.weekly[0].id
 
   selection_tag {
@@ -178,10 +178,10 @@ resource "aws_backup_selection" "weekly" {
 resource "aws_backup_plan" "monthly" {
   count = var.monthly_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.monthly_backup_plan_config.name}_${random_id.main.id}"
+  name = var.monthly_backup_plan_config.name
   rule {
     completion_window = var.monthly_backup_plan_config.completion_window
-    rule_name         = "${var.monthly_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.monthly_backup_plan_config.name
     schedule          = var.monthly_backup_plan_config.schedule
     start_window      = var.monthly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -200,7 +200,7 @@ resource "aws_backup_selection" "monthly" {
   count = var.monthly_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.monthly_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.monthly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.monthly[0].id
 
   selection_tag {
@@ -213,10 +213,10 @@ resource "aws_backup_selection" "monthly" {
 resource "aws_backup_plan" "yearly" {
   count = var.yearly_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.yearly_backup_plan_config.name}_${random_id.main.id}"
+  name = var.yearly_backup_plan_config.name
   rule {
     completion_window = var.yearly_backup_plan_config.completion_window
-    rule_name         = "${var.yearly_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.yearly_backup_plan_config.name
     schedule          = var.yearly_backup_plan_config.schedule
     start_window      = var.yearly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -235,7 +235,7 @@ resource "aws_backup_selection" "yearly" {
   count = var.yearly_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.yearly_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.yearly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.yearly[0].id
 
   selection_tag {
@@ -248,10 +248,10 @@ resource "aws_backup_selection" "yearly" {
 resource "aws_backup_plan" "unscoped" {
   count = var.unscoped_backup_plan_config.enabled ? 1 : 0
 
-  name = "${var.unscoped_backup_plan_config.name}_${random_id.main.id}"
+  name = var.unscoped_backup_plan_config.name
   rule {
     completion_window = var.unscoped_backup_plan_config.completion_window
-    rule_name         = "${var.unscoped_backup_plan_config.name}_${random_id.main.id}"
+    rule_name         = var.unscoped_backup_plan_config.name
     schedule          = var.unscoped_backup_plan_config.schedule
     start_window      = var.unscoped_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -270,7 +270,7 @@ resource "aws_backup_selection" "unscoped" {
   count = var.unscoped_backup_plan_config.enabled ? 1 : 0
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${var.unscoped_backup_plan_config.name}_${random_id.main.id}_selection"
+  name         = "${var.unscoped_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.unscoped[0].id
 
   resources = ["*"]
@@ -286,10 +286,10 @@ resource "aws_backup_selection" "unscoped" {
 resource "aws_backup_plan" "additional_plans" {
   for_each = var.additional_backup_plan_config
 
-  name = "${each.value.name}_${random_id.main.id}"
+  name = each.value.name
   rule {
     completion_window = each.value.completion_window
-    rule_name         = "${each.value.name}_${random_id.main.id}"
+    rule_name         = each.value.name
     schedule          = each.value.schedule
     start_window      = each.value.start_window
     target_vault_name = aws_backup_vault.main.name
@@ -314,7 +314,7 @@ resource "aws_backup_selection" "additional" {
   for_each = var.additional_backup_plan_config
 
   iam_role_arn = aws_iam_role.main.arn
-  name         = "${each.value.name}_${random_id.main.id}_selection"
+  name         = "${each.value.name}_selection"
   plan_id      = aws_backup_plan.additional_plans[each.key].id
 
   selection_tag {
