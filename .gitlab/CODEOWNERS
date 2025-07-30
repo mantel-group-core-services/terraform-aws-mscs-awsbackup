@@ -1,2 +1,5 @@
 # Primary maintainers of the module
-* @eric.price @ev.williams @paul.gear
+* @eric.price @ev.williams @paul.gear @jamis.march
+
+# Secondary approvers for use in emergencies if a primary is not available
+* @fabio.carvana @simon.richards
