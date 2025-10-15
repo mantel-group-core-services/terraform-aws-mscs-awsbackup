@@ -1,8 +1,14 @@
 # core-services / aws-backup
 
-This module is used to deploy the per-account AWS Backup solution following the Core Services pattern.
+This module is used to deploy a per-account AWS Backup solution following the Mantel Group MS Core Services pattern. It will deploy AWS Backup with sensible defaults while allowing for customisation.
 
-For more information on Core Services, including the coding standards that are used check out he Confluence space: https://mantelgroup.atlassian.net/wiki/spaces/MS/pages/5166432523/Core+Services
+If using this module, the resulting AWS Backup Plans will provide basic coverage according to best practices and is suitable for most workloads, provided inter-region backups and restores are not required.
+
+AWS Organizations Backup Policies will be handled in their own module.
+
+Note this repository is mirrored from our internal GitLab cluster and all development work takes place there.
+
+## For Contributors
 
 This repository has `pre-commit` hooks so installing `pre-commit` is required. Instructions can be found here: https://pre-commit.com/
 
