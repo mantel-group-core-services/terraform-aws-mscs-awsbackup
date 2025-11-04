@@ -1,5 +1,6 @@
 resource "aws_kms_key" "main" {
   enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.kms_policy.json
 
   lifecycle {
     prevent_destroy = true
