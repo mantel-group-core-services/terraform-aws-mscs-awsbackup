@@ -13,7 +13,7 @@ resource "aws_kms_key" "main" {
 }
 
 resource "aws_kms_alias" "main" {
-  name          = "alias/mgms_backup_key"
+  name          = var.kms_key_alias
   target_key_id = aws_kms_key.main.id
 }
 

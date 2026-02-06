@@ -16,4 +16,5 @@ locals {
     Owner       = "MantelGroupManagedServices"
     CoreService = "AWSBackup"
   }
+  name_prefix = var.backup_plan_name_prefix != "" ? "${var.backup_plan_name_prefix}_" : ""
 }
