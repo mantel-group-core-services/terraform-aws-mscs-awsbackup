@@ -4,6 +4,36 @@ variable "vault_name" {
   default     = "mgms_backup_vault"
 }
 
+variable "kms_key_alias" {
+  description = "The alias name for the KMS key used to encrypt the backup vault."
+  type        = string
+  default     = "alias/mgms_backup_key"
+}
+
+variable "iam_role_name" {
+  description = "The name of the IAM role used by AWS Backup."
+  type        = string
+  default     = "mgms_cs_backup_role"
+}
+
+variable "iam_policy_name" {
+  description = "The name of the IAM policy attached to the AWS Backup service role."
+  type        = string
+  default     = "mg_cs_backup_role_policy"
+}
+
+variable "iam_path" {
+  description = "The IAM path for the role and policy."
+  type        = string
+  default     = "/mgms/"
+}
+
+variable "backup_plan_name_prefix" {
+  description = "Prefix to prepend to all backup plan names (e.g., 'myapp' results in 'myapp_backupDaily')."
+  type        = string
+  default     = ""
+}
+
 variable "continuous_backup_plan_config" {
   description = "Contains the general configuration of the Continuous AWS Backup Plan."
   type = object({
@@ -12,6 +42,7 @@ variable "continuous_backup_plan_config" {
     start_window        = number
     completion_window   = number
     retention_in_days   = number
+    selection_tag_key   = string
     selection_tag_value = string
     schedule            = string
   })
@@ -21,22 +52,24 @@ variable "continuous_backup_plan_config" {
     start_window        = 60
     completion_window   = 180
     retention_in_days   = 3
+    selection_tag_key   = "backup"
     selection_tag_value = "Continuous"
     schedule            = "cron(0 * ? * * *)"
   }
 }
 
 variable "hourly_backup_plan_config" {
-  description = "Contains the general configuration of the Hourly AWS Backup Plan. To enable Windows VSS set `enable_vss` to `enabled`"
+  description = "Contains the general configuration of the Hourly AWS Backup Plan."
   type = object({
     enabled             = bool
     name                = string
     start_window        = number
     completion_window   = number
     retention_in_days   = number
+    selection_tag_key   = string
     selection_tag_value = string
     schedule            = string
-    enable_vss          = string
+    enable_vss          = bool
   })
   default = {
     enabled             = true
@@ -44,23 +77,25 @@ variable "hourly_backup_plan_config" {
     start_window        = 60
     completion_window   = 180
     retention_in_days   = 14
+    selection_tag_key   = "backup"
     selection_tag_value = "Daily"
     schedule            = "cron(0 * ? * * *)"
-    enable_vss          = "disabled"
+    enable_vss          = false
   }
 }
 
 variable "daily_backup_plan_config" {
-  description = "Contains the general configuration of the Daily AWS Backup Plan. To enable Windows VSS set `enable_vss` to `enabled`"
+  description = "Contains the general configuration of the Daily AWS Backup Plan."
   type = object({
     enabled             = bool
     name                = string
     start_window        = number
     completion_window   = number
     retention_in_days   = number
+    selection_tag_key   = string
     selection_tag_value = string
     schedule            = string
-    enable_vss          = string
+    enable_vss          = bool
   })
   default = {
     enabled             = true
@@ -68,23 +103,25 @@ variable "daily_backup_plan_config" {
     start_window        = 60
     completion_window   = 180
     retention_in_days   = 35
+    selection_tag_key   = "backup"
     selection_tag_value = "Daily"
     schedule            = "cron(0 10 ? * * *)"
-    enable_vss          = "disabled"
+    enable_vss          = false
   }
 }
 
 variable "weekly_backup_plan_config" {
-  description = "Contains the general configuration of the Weekly AWS Backup Plan. To enable Windows VSS set `enable_vss` to `enabled`"
+  description = "Contains the general configuration of the Weekly AWS Backup Plan."
   type = object({
     enabled             = bool
     name                = string
     start_window        = number
     completion_window   = number
     retention_in_days   = number
+    selection_tag_key   = string
     selection_tag_value = string
     schedule            = string
-    enable_vss          = string
+    enable_vss          = bool
   })
   default = {
     enabled             = true
@@ -92,23 +129,25 @@ variable "weekly_backup_plan_config" {
     start_window        = 60
     completion_window   = 480
     retention_in_days   = 105
+    selection_tag_key   = "backup"
     selection_tag_value = "Weekly"
     schedule            = "cron(0 10 ? * FRI *)"
-    enable_vss          = "disabled"
+    enable_vss          = false
   }
 }
 
 variable "monthly_backup_plan_config" {
-  description = "Contains the general configuration of the Daily AWS Backup Plan. To enable Windows VSS set `enable_vss` to `enabled`"
+  description = "Contains the general configuration of the Monthly AWS Backup Plan."
   type = object({
     enabled             = bool
     name                = string
     start_window        = number
     completion_window   = number
     retention_in_days   = number
+    selection_tag_key   = string
     selection_tag_value = string
     schedule            = string
-    enable_vss          = string
+    enable_vss          = bool
   })
   default = {
     enabled             = true
@@ -116,23 +155,25 @@ variable "monthly_backup_plan_config" {
     start_window        = 60
     completion_window   = 480
     retention_in_days   = 455
+    selection_tag_key   = "backup"
     selection_tag_value = "Monthly"
     schedule            = "cron(0 19 1 * ? *)"
-    enable_vss          = "disabled"
+    enable_vss          = false
   }
 }
 
 variable "yearly_backup_plan_config" {
-  description = "Contains the general configuration of the Daily AWS Backup Plan. To enable Windows VSS set `enable_vss` to `enabled`."
+  description = "Contains the general configuration of the Yearly AWS Backup Plan."
   type = object({
     enabled             = bool
     name                = string
     start_window        = number
     completion_window   = number
     retention_in_days   = number
+    selection_tag_key   = string
     selection_tag_value = string
     schedule            = string
-    enable_vss          = string
+    enable_vss          = bool
   })
   default = {
     enabled             = true
@@ -140,29 +181,31 @@ variable "yearly_backup_plan_config" {
     start_window        = 60
     completion_window   = 480
     retention_in_days   = 765
+    selection_tag_key   = "backup"
     selection_tag_value = "Yearly"
     schedule            = "cron(0 19 1 1 ? *)"
-    enable_vss          = "disabled"
+    enable_vss          = false
   }
 }
 
 variable "additional_backup_plan_config" {
-  description = "Contains the general configuration of an AWS Backup Plan. To enable Windows VSS set `enable_vss` to `enabled`. This can be used to set any number of arbitrary additional Backup Plans."
+  description = "Contains the general configuration of an AWS Backup Plan. This can be used to set any number of arbitrary additional Backup Plans."
   type = map(object({
     name                     = string
     start_window             = number
     completion_window        = number
     enable_continuous_backup = bool
     retention_in_days        = number
+    selection_tag_key        = string
     selection_tag_value      = string
     schedule                 = string
-    enable_vss               = string
+    enable_vss               = bool
   }))
   default = {}
 }
 
 variable "unscoped_backup_plan_config" {
-  description = "Contains the configuration of the Unscoped backup plan for untagged resources. To enable Windows VSS set `enable_vss` to `enabled`"
+  description = "Contains the configuration of the Unscoped backup plan for untagged resources."
   type = object({
     enabled                  = bool
     name                     = string
@@ -170,8 +213,9 @@ variable "unscoped_backup_plan_config" {
     completion_window        = number
     enable_continuous_backup = bool
     retention_in_days        = number
+    selection_tag_key        = string
     schedule                 = string
-    enable_vss               = string
+    enable_vss               = bool
   })
   default = {
     enabled                  = true
@@ -180,8 +224,9 @@ variable "unscoped_backup_plan_config" {
     completion_window        = 180
     enable_continuous_backup = false
     retention_in_days        = 14
+    selection_tag_key        = "backup"
     schedule                 = "cron(0 10 ? * * *)"
-    enable_vss               = "disabled"
+    enable_vss               = false
   }
 }
 
