@@ -68,8 +68,13 @@ variable "hourly_backup_plan_config" {
     retention_in_days   = number
     selection_tag_key   = string
     selection_tag_value = string
-    schedule            = string
-    enable_vss          = bool
+    selection_tags = list(object({
+      key   = string
+      value = string
+      type  = string
+    }))
+    schedule   = string
+    enable_vss = bool
   })
   default = {
     enabled             = true
@@ -79,6 +84,7 @@ variable "hourly_backup_plan_config" {
     retention_in_days   = 14
     selection_tag_key   = "backup"
     selection_tag_value = "Daily"
+    selection_tags      = []
     schedule            = "cron(0 * ? * * *)"
     enable_vss          = false
   }
@@ -94,8 +100,13 @@ variable "daily_backup_plan_config" {
     retention_in_days   = number
     selection_tag_key   = string
     selection_tag_value = string
-    schedule            = string
-    enable_vss          = bool
+    selection_tags = list(object({
+      key   = string
+      value = string
+      type  = string
+    }))
+    schedule   = string
+    enable_vss = bool
   })
   default = {
     enabled             = true
@@ -105,8 +116,9 @@ variable "daily_backup_plan_config" {
     retention_in_days   = 35
     selection_tag_key   = "backup"
     selection_tag_value = "Daily"
-    schedule            = "cron(0 10 ? * * *)"
-    enable_vss          = false
+    selection_tags = []
+    schedule       = "cron(0 10 ? * * *)"
+    enable_vss     = false
   }
 }
 
@@ -120,8 +132,13 @@ variable "weekly_backup_plan_config" {
     retention_in_days   = number
     selection_tag_key   = string
     selection_tag_value = string
-    schedule            = string
-    enable_vss          = bool
+    selection_tags = list(object({
+      key   = string
+      value = string
+      type  = string
+    }))
+    schedule   = string
+    enable_vss = bool
   })
   default = {
     enabled             = true
@@ -131,6 +148,7 @@ variable "weekly_backup_plan_config" {
     retention_in_days   = 105
     selection_tag_key   = "backup"
     selection_tag_value = "Weekly"
+    selection_tags      = []
     schedule            = "cron(0 10 ? * FRI *)"
     enable_vss          = false
   }
@@ -146,8 +164,13 @@ variable "monthly_backup_plan_config" {
     retention_in_days   = number
     selection_tag_key   = string
     selection_tag_value = string
-    schedule            = string
-    enable_vss          = bool
+    selection_tags = list(object({
+      key   = string
+      value = string
+      type  = string
+    }))
+    schedule   = string
+    enable_vss = bool
   })
   default = {
     enabled             = true
@@ -157,6 +180,7 @@ variable "monthly_backup_plan_config" {
     retention_in_days   = 455
     selection_tag_key   = "backup"
     selection_tag_value = "Monthly"
+    selection_tags      = []
     schedule            = "cron(0 19 1 * ? *)"
     enable_vss          = false
   }
@@ -172,8 +196,13 @@ variable "yearly_backup_plan_config" {
     retention_in_days   = number
     selection_tag_key   = string
     selection_tag_value = string
-    schedule            = string
-    enable_vss          = bool
+    selection_tags = list(object({
+      key   = string
+      value = string
+      type  = string
+    }))
+    schedule   = string
+    enable_vss = bool
   })
   default = {
     enabled             = true
@@ -183,6 +212,7 @@ variable "yearly_backup_plan_config" {
     retention_in_days   = 765
     selection_tag_key   = "backup"
     selection_tag_value = "Yearly"
+    selection_tags      = []
     schedule            = "cron(0 19 1 1 ? *)"
     enable_vss          = false
   }
