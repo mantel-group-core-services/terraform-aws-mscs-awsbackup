@@ -3,7 +3,7 @@ resource "aws_backup_vault" "main" {
   kms_key_arn = aws_kms_key.main.arn
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   tags = merge(
@@ -68,6 +68,7 @@ resource "aws_backup_selection" "continuous" {
   }
 }
 
+# --------------------------------------------------------------------------------------- BACKUP PLAN - DAILY ----------
 resource "aws_backup_plan" "daily" {
   count = var.daily_backup_plan_config.enabled ? 1 : 0
 
@@ -98,6 +99,7 @@ resource "aws_backup_plan" "daily" {
   )
 }
 
+# ---------------------------------------------------------------------------------- BACKUP SELECTION - DAILY ----------
 resource "aws_backup_selection" "daily" {
   count = var.daily_backup_plan_config.enabled ? 1 : 0
 
@@ -110,8 +112,19 @@ resource "aws_backup_selection" "daily" {
     key   = var.daily_backup_plan_config.selection_tag_key
     value = var.daily_backup_plan_config.selection_tag_value
   }
+
+  dynamic "selection_tag" {
+    for_each = var.daily_backup_plan_config.selection_tags
+
+    content {
+      type  = selection_tag.value.type
+      key   = selection_tag.value.key
+      value = selection_tag.value.value
+    }
+  }
 }
 
+# -------------------------------------------------------------------------------------- BACKUP PLAN - HOURLY ----------
 resource "aws_backup_plan" "hourly" {
   count = var.hourly_backup_plan_config.enabled ? 1 : 0
 
@@ -142,6 +155,7 @@ resource "aws_backup_plan" "hourly" {
   )
 }
 
+# --------------------------------------------------------------------------------- BACKUP SELECTION - HOURLY ----------
 resource "aws_backup_selection" "hourly" {
   count = var.hourly_backup_plan_config.enabled ? 1 : 0
 
@@ -154,8 +168,21 @@ resource "aws_backup_selection" "hourly" {
     key   = var.hourly_backup_plan_config.selection_tag_key
     value = var.hourly_backup_plan_config.selection_tag_value
   }
+
+  # --- Include any extra tags (if present)
+  dynamic "selection_tag" {
+    for_each = var.hourly_backup_plan_config.selection_tags
+
+    content {
+      type  = selection_tag.value.type
+      key   = selection_tag.value.key
+      value = selection_tag.value.value
+    }
+  }
+
 }
 
+# -------------------------------------------------------------------------------------- BACKUP PLAN - WEEKLY ----------
 resource "aws_backup_plan" "weekly" {
   count = var.weekly_backup_plan_config.enabled ? 1 : 0
 
@@ -186,6 +213,7 @@ resource "aws_backup_plan" "weekly" {
   )
 }
 
+# --------------------------------------------------------------------------------- BACKUP SELECTION - WEEKLY ----------
 resource "aws_backup_selection" "weekly" {
   count = var.weekly_backup_plan_config.enabled ? 1 : 0
 
@@ -198,8 +226,20 @@ resource "aws_backup_selection" "weekly" {
     key   = var.weekly_backup_plan_config.selection_tag_key
     value = var.weekly_backup_plan_config.selection_tag_value
   }
+
+  # --- Include any extra tags (if present)
+  dynamic "selection_tag" {
+    for_each = var.weekly_backup_plan_config.selection_tags
+
+    content {
+      type  = selection_tag.value.type
+      key   = selection_tag.value.key
+      value = selection_tag.value.value
+    }
+  }
 }
 
+# ------------------------------------------------------------------------------------- BACKUP PLAN - MONTHLY ----------
 resource "aws_backup_plan" "monthly" {
   count = var.monthly_backup_plan_config.enabled ? 1 : 0
 
@@ -230,6 +270,7 @@ resource "aws_backup_plan" "monthly" {
   )
 }
 
+# -------------------------------------------------------------------------------- BACKUP SELECTION - MONTHLY ----------
 resource "aws_backup_selection" "monthly" {
   count = var.monthly_backup_plan_config.enabled ? 1 : 0
 
@@ -242,8 +283,20 @@ resource "aws_backup_selection" "monthly" {
     key   = var.monthly_backup_plan_config.selection_tag_key
     value = var.monthly_backup_plan_config.selection_tag_value
   }
+
+  # --- Include any extra tags (if present)
+  dynamic "selection_tag" {
+    for_each = var.monthly_backup_plan_config.selection_tags
+
+    content {
+      type  = selection_tag.value.type
+      key   = selection_tag.value.key
+      value = selection_tag.value.value
+    }
+  }
 }
 
+# -------------------------------------------------------------------------------------- BACKUP PLAN - YEARLY ----------
 resource "aws_backup_plan" "yearly" {
   count = var.yearly_backup_plan_config.enabled ? 1 : 0
 
@@ -274,6 +327,7 @@ resource "aws_backup_plan" "yearly" {
   )
 }
 
+# --------------------------------------------------------------------------------- BACKUP SELECTION - YEARLY ----------
 resource "aws_backup_selection" "yearly" {
   count = var.yearly_backup_plan_config.enabled ? 1 : 0
 
@@ -285,6 +339,17 @@ resource "aws_backup_selection" "yearly" {
     type  = "STRINGEQUALS"
     key   = var.yearly_backup_plan_config.selection_tag_key
     value = var.yearly_backup_plan_config.selection_tag_value
+  }
+
+  # --- Include any extra tags (if present)
+  dynamic "selection_tag" {
+    for_each = var.yearly_backup_plan_config.selection_tags
+
+    content {
+      type  = selection_tag.value.type
+      key   = selection_tag.value.key
+      value = selection_tag.value.value
+    }
   }
 }
 
