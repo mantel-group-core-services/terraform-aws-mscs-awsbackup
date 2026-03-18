@@ -327,7 +327,11 @@ resource "aws_backup_selection" "unscoped" {
   name         = "${local.name_prefix}${var.unscoped_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.unscoped[0].id
 
-  resources = ["*"]
+  resources = [
+    "arn:aws:rds:*:*:db:*",
+    "arn:aws:rds:*:*:cluster:*",
+    "arn:aws:dynamodb:*:*:table/*",
+  ]
 
   condition {
     string_not_like {
