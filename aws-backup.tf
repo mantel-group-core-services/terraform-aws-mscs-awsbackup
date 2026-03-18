@@ -114,7 +114,7 @@ resource "aws_backup_selection" "daily" {
   }
 
   dynamic "selection_tag" {
-    for_each = var.daily_backup_plan_config.selection_tags
+    for_each = var.daily_backup_plan_config.additional_selection_tags
 
     content {
       type  = selection_tag.value.type
@@ -169,7 +169,7 @@ resource "aws_backup_selection" "hourly" {
 
   # --- Include any extra tags (if present)
   dynamic "selection_tag" {
-    for_each = var.hourly_backup_plan_config.selection_tags
+    for_each = var.hourly_backup_plan_config.additional_selection_tags
 
     content {
       type  = selection_tag.value.type
@@ -225,7 +225,7 @@ resource "aws_backup_selection" "weekly" {
 
   # --- Include any extra tags (if present)
   dynamic "selection_tag" {
-    for_each = var.weekly_backup_plan_config.selection_tags
+    for_each = var.weekly_backup_plan_config.additional_selection_tags
 
     content {
       type  = selection_tag.value.type
@@ -280,7 +280,7 @@ resource "aws_backup_selection" "monthly" {
 
   # --- Include any extra tags (if present)
   dynamic "selection_tag" {
-    for_each = var.monthly_backup_plan_config.selection_tags
+    for_each = var.monthly_backup_plan_config.additional_selection_tags
 
     content {
       type  = selection_tag.value.type
@@ -335,7 +335,7 @@ resource "aws_backup_selection" "yearly" {
 
   # --- Include any extra tags (if present)
   dynamic "selection_tag" {
-    for_each = var.yearly_backup_plan_config.selection_tags
+    for_each = var.yearly_backup_plan_config.additional_selection_tags
 
     content {
       type  = selection_tag.value.type
