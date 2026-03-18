@@ -3,7 +3,7 @@ resource "aws_backup_vault" "main" {
   kms_key_arn = aws_kms_key.main.arn
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 
   tags = merge(
