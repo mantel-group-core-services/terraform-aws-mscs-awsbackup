@@ -116,9 +116,9 @@ variable "daily_backup_plan_config" {
     retention_in_days   = 35
     selection_tag_key   = "backup"
     selection_tag_value = "Daily"
-    selection_tags = []
-    schedule       = "cron(0 10 ? * * *)"
-    enable_vss     = false
+    selection_tags      = []
+    schedule            = "cron(0 10 ? * * *)"
+    enable_vss          = false
   }
 }
 
