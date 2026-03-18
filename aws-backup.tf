@@ -68,7 +68,6 @@ resource "aws_backup_selection" "continuous" {
   }
 }
 
-# --------------------------------------------------------------------------------------- BACKUP PLAN - DAILY ----------
 resource "aws_backup_plan" "daily" {
   count = var.daily_backup_plan_config.enabled ? 1 : 0
 
@@ -99,7 +98,6 @@ resource "aws_backup_plan" "daily" {
   )
 }
 
-# ---------------------------------------------------------------------------------- BACKUP SELECTION - DAILY ----------
 resource "aws_backup_selection" "daily" {
   count = var.daily_backup_plan_config.enabled ? 1 : 0
 
@@ -124,7 +122,6 @@ resource "aws_backup_selection" "daily" {
   }
 }
 
-# -------------------------------------------------------------------------------------- BACKUP PLAN - HOURLY ----------
 resource "aws_backup_plan" "hourly" {
   count = var.hourly_backup_plan_config.enabled ? 1 : 0
 
@@ -155,7 +152,6 @@ resource "aws_backup_plan" "hourly" {
   )
 }
 
-# --------------------------------------------------------------------------------- BACKUP SELECTION - HOURLY ----------
 resource "aws_backup_selection" "hourly" {
   count = var.hourly_backup_plan_config.enabled ? 1 : 0
 
@@ -182,7 +178,6 @@ resource "aws_backup_selection" "hourly" {
 
 }
 
-# -------------------------------------------------------------------------------------- BACKUP PLAN - WEEKLY ----------
 resource "aws_backup_plan" "weekly" {
   count = var.weekly_backup_plan_config.enabled ? 1 : 0
 
@@ -213,7 +208,6 @@ resource "aws_backup_plan" "weekly" {
   )
 }
 
-# --------------------------------------------------------------------------------- BACKUP SELECTION - WEEKLY ----------
 resource "aws_backup_selection" "weekly" {
   count = var.weekly_backup_plan_config.enabled ? 1 : 0
 
@@ -239,7 +233,6 @@ resource "aws_backup_selection" "weekly" {
   }
 }
 
-# ------------------------------------------------------------------------------------- BACKUP PLAN - MONTHLY ----------
 resource "aws_backup_plan" "monthly" {
   count = var.monthly_backup_plan_config.enabled ? 1 : 0
 
@@ -270,7 +263,6 @@ resource "aws_backup_plan" "monthly" {
   )
 }
 
-# -------------------------------------------------------------------------------- BACKUP SELECTION - MONTHLY ----------
 resource "aws_backup_selection" "monthly" {
   count = var.monthly_backup_plan_config.enabled ? 1 : 0
 
@@ -296,7 +288,6 @@ resource "aws_backup_selection" "monthly" {
   }
 }
 
-# -------------------------------------------------------------------------------------- BACKUP PLAN - YEARLY ----------
 resource "aws_backup_plan" "yearly" {
   count = var.yearly_backup_plan_config.enabled ? 1 : 0
 
@@ -327,7 +318,6 @@ resource "aws_backup_plan" "yearly" {
   )
 }
 
-# --------------------------------------------------------------------------------- BACKUP SELECTION - YEARLY ----------
 resource "aws_backup_selection" "yearly" {
   count = var.yearly_backup_plan_config.enabled ? 1 : 0
 
