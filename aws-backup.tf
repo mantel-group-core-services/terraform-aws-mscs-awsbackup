@@ -23,8 +23,6 @@ data "aws_iam_policy_document" "vault_access_policy" {
     actions = [
       "backup:DeleteRecoveryPoint",
       "backup:UpdateRecoveryPointLifecycle",
-      "backup:PutBackupVaultAccessPolicy",
-      "backup:UpdateRecoveryPointLifecycle"
     ]
     resources = ["*"]
   }
@@ -328,9 +326,9 @@ resource "aws_backup_selection" "unscoped" {
   plan_id      = aws_backup_plan.unscoped[0].id
 
   resources = [
+    "arn:aws:dynamodb:*:*:table/*",
     "arn:aws:rds:*:*:db:*",
     "arn:aws:rds:*:*:cluster:*",
-    "arn:aws:dynamodb:*:*:table/*",
   ]
 
   condition {
