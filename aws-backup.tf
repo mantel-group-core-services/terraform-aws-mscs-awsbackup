@@ -167,7 +167,6 @@ resource "aws_backup_selection" "hourly" {
     value = var.hourly_backup_plan_config.selection_tag_value
   }
 
-  # --- Include any extra tags (if present)
   dynamic "selection_tag" {
     for_each = coalesce(var.hourly_backup_plan_config.additional_selection_tags, [])
 
@@ -223,7 +222,6 @@ resource "aws_backup_selection" "weekly" {
     value = var.weekly_backup_plan_config.selection_tag_value
   }
 
-  # --- Include any extra tags (if present)
   dynamic "selection_tag" {
     for_each = coalesce(var.weekly_backup_plan_config.additional_selection_tags, [])
 
@@ -278,7 +276,6 @@ resource "aws_backup_selection" "monthly" {
     value = var.monthly_backup_plan_config.selection_tag_value
   }
 
-  # --- Include any extra tags (if present)
   dynamic "selection_tag" {
     for_each = coalesce(var.monthly_backup_plan_config.additional_selection_tags, [])
 
@@ -333,7 +330,6 @@ resource "aws_backup_selection" "yearly" {
     value = var.yearly_backup_plan_config.selection_tag_value
   }
 
-  # --- Include any extra tags (if present)
   dynamic "selection_tag" {
     for_each = coalesce(var.yearly_backup_plan_config.additional_selection_tags, [])
 
