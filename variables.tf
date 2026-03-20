@@ -61,15 +61,15 @@ variable "continuous_backup_plan_config" {
 variable "hourly_backup_plan_config" {
   description = "Contains the general configuration of the Hourly AWS Backup Plan."
   type = object({
+    completion_window   = number
     enabled             = bool
     enable_vss          = bool
     name                = string
-    start_window        = number
-    completion_window   = number
     retention_in_days   = number
     schedule            = string
     selection_tag_key   = string
     selection_tag_value = string
+    start_window        = number
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -77,31 +77,30 @@ variable "hourly_backup_plan_config" {
     })))
   })
   default = {
-    enabled                   = true
-    enable_vss                = false
-    name                      = "backupHourly"
-    start_window              = 60
-    completion_window         = 180
-    retention_in_days         = 14
-    schedule                  = "cron(0 * ? * * *)"
-    selection_tag_key         = "backup"
-    selection_tag_value       = "Daily"
-    additional_selection_tags = []
+    completion_window   = 180
+    enabled             = true
+    enable_vss          = false
+    name                = "backupHourly"
+    retention_in_days   = 14
+    schedule            = "cron(0 * ? * * *)"
+    selection_tag_key   = "backup"
+    selection_tag_value = "Daily"
+    start_window        = 60
   }
 }
 
 variable "daily_backup_plan_config" {
   description = "Contains the general configuration of the Daily AWS Backup Plan."
   type = object({
+    completion_window   = number
     enabled             = bool
     enable_vss          = bool
     name                = string
-    start_window        = number
-    completion_window   = number
     retention_in_days   = number
     schedule            = string
     selection_tag_key   = string
     selection_tag_value = string
+    start_window        = number
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -109,31 +108,30 @@ variable "daily_backup_plan_config" {
     })))
   })
   default = {
-    enabled                   = true
-    enable_vss                = false
-    name                      = "backupDaily"
-    start_window              = 60
-    completion_window         = 180
-    retention_in_days         = 35
-    schedule                  = "cron(0 10 ? * * *)"
-    selection_tag_key         = "backup"
-    selection_tag_value       = "Daily"
-    additional_selection_tags = []
+    completion_window   = 180
+    enabled             = true
+    enable_vss          = false
+    retention_in_days   = 35
+    name                = "backupDaily"
+    schedule            = "cron(0 10 ? * * *)"
+    selection_tag_key   = "backup"
+    selection_tag_value = "Daily"
+    start_window        = 60
   }
 }
 
 variable "weekly_backup_plan_config" {
   description = "Contains the general configuration of the Weekly AWS Backup Plan."
   type = object({
+    completion_window   = number
     enabled             = bool
     enable_vss          = bool
     name                = string
-    start_window        = number
-    completion_window   = number
     retention_in_days   = number
     schedule            = string
     selection_tag_key   = string
     selection_tag_value = string
+    start_window        = number
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -141,31 +139,30 @@ variable "weekly_backup_plan_config" {
     })))
   })
   default = {
-    enabled                   = true
-    enable_vss                = false
-    name                      = "backupWeekly"
-    start_window              = 60
-    completion_window         = 480
-    retention_in_days         = 105
-    schedule                  = "cron(0 10 ? * FRI *)"
-    selection_tag_key         = "backup"
-    selection_tag_value       = "Weekly"
-    additional_selection_tags = []
+    completion_window   = 480
+    enabled             = true
+    enable_vss          = false
+    name                = "backupWeekly"
+    retention_in_days   = 105
+    schedule            = "cron(0 10 ? * FRI *)"
+    selection_tag_key   = "backup"
+    selection_tag_value = "Weekly"
+    start_window        = 60
   }
 }
 
 variable "monthly_backup_plan_config" {
   description = "Contains the general configuration of the Monthly AWS Backup Plan."
   type = object({
+    completion_window   = number
     enabled             = bool
     enable_vss          = bool
     name                = string
-    start_window        = number
-    completion_window   = number
     retention_in_days   = number
     schedule            = string
     selection_tag_key   = string
     selection_tag_value = string
+    start_window        = number
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -173,31 +170,30 @@ variable "monthly_backup_plan_config" {
     })))
   })
   default = {
-    enabled                   = true
-    enable_vss                = false
-    name                      = "backupMonthly"
-    start_window              = 60
-    completion_window         = 480
-    retention_in_days         = 455
-    schedule                  = "cron(0 19 1 * ? *)"
-    selection_tag_key         = "backup"
-    selection_tag_value       = "Monthly"
-    additional_selection_tags = []
+    completion_window   = 480
+    enabled             = true
+    enable_vss          = false
+    name                = "backupMonthly"
+    retention_in_days   = 455
+    schedule            = "cron(0 19 1 * ? *)"
+    selection_tag_key   = "backup"
+    selection_tag_value = "Monthly"
+    start_window        = 60
   }
 }
 
 variable "yearly_backup_plan_config" {
   description = "Contains the general configuration of the Yearly AWS Backup Plan."
   type = object({
+    completion_window   = number
     enabled             = bool
     enable_vss          = bool
     name                = string
-    start_window        = number
-    completion_window   = number
     retention_in_days   = number
     schedule            = string
     selection_tag_key   = string
     selection_tag_value = string
+    start_window        = number
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -205,31 +201,30 @@ variable "yearly_backup_plan_config" {
     })))
   })
   default = {
-    enabled                   = true
-    enable_vss                = false
-    name                      = "backupYearly"
-    start_window              = 60
-    completion_window         = 480
-    retention_in_days         = 765
-    schedule                  = "cron(0 19 1 1 ? *)"
-    selection_tag_key         = "backup"
-    selection_tag_value       = "Yearly"
-    additional_selection_tags = []
+    completion_window   = 480
+    enabled             = true
+    enable_vss          = false
+    name                = "backupYearly"
+    retention_in_days   = 765
+    schedule            = "cron(0 19 1 1 ? *)"
+    selection_tag_key   = "backup"
+    selection_tag_value = "Yearly"
+    start_window        = 60
   }
 }
 
 variable "additional_backup_plan_config" {
   description = "Contains the general configuration of an AWS Backup Plan. This can be used to set any number of arbitrary additional Backup Plans."
   type = map(object({
-    name                     = string
-    start_window             = number
     completion_window        = number
     enable_continuous_backup = bool
+    enable_vss               = bool
+    name                     = string
     retention_in_days        = number
+    schedule                 = string
     selection_tag_key        = string
     selection_tag_value      = string
-    schedule                 = string
-    enable_vss               = bool
+    start_window             = number
   }))
   default = {}
 }
@@ -237,26 +232,26 @@ variable "additional_backup_plan_config" {
 variable "unscoped_backup_plan_config" {
   description = "Contains the configuration of the Unscoped backup plan for untagged resources."
   type = object({
-    enabled                  = bool
-    name                     = string
-    start_window             = number
     completion_window        = number
+    enabled                  = bool
     enable_continuous_backup = bool
-    retention_in_days        = number
-    selection_tag_key        = string
-    schedule                 = string
     enable_vss               = bool
+    name                     = string
+    retention_in_days        = number
+    schedule                 = string
+    selection_tag_key        = string
+    start_window             = number
   })
   default = {
-    enabled                  = true
-    name                     = "mgms_unscoped_backup_plan"
-    start_window             = 60
     completion_window        = 180
+    enabled                  = true
     enable_continuous_backup = false
-    retention_in_days        = 14
-    selection_tag_key        = "backup"
-    schedule                 = "cron(0 10 ? * * *)"
     enable_vss               = false
+    name                     = "mgms_unscoped_backup_plan"
+    retention_in_days        = 14
+    schedule                 = "cron(0 10 ? * * *)"
+    selection_tag_key        = "backup"
+    start_window             = 60
   }
 }
 
