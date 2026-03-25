@@ -105,10 +105,21 @@ resource "aws_backup_selection" "daily" {
   name         = "${local.name_prefix}${var.daily_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.daily[0].id
 
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = var.daily_backup_plan_config.selection_tag_key
-    value = var.daily_backup_plan_config.selection_tag_value
+  resources = ["*"]
+
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/${var.daily_backup_plan_config.selection_tag_key}"
+      value = var.daily_backup_plan_config.selection_tag_value
+    }
+
+    dynamic "string_equals" {
+      for_each = coalesce(var.daily_backup_plan_config.additional_selection_tags, [])
+      content {
+        key   = "aws:ResourceTag/${string_equals.value.key}"
+        value = string_equals.value.value
+      }
+    }
   }
 }
 
@@ -149,10 +160,21 @@ resource "aws_backup_selection" "hourly" {
   name         = "${local.name_prefix}${var.hourly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.hourly[0].id
 
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = var.hourly_backup_plan_config.selection_tag_key
-    value = var.hourly_backup_plan_config.selection_tag_value
+  resources = ["*"]
+
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/${var.hourly_backup_plan_config.selection_tag_key}"
+      value = var.hourly_backup_plan_config.selection_tag_value
+    }
+
+    dynamic "string_equals" {
+      for_each = coalesce(var.hourly_backup_plan_config.additional_selection_tags, [])
+      content {
+        key   = "aws:ResourceTag/${string_equals.value.key}"
+        value = string_equals.value.value
+      }
+    }
   }
 }
 
@@ -193,10 +215,21 @@ resource "aws_backup_selection" "weekly" {
   name         = "${local.name_prefix}${var.weekly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.weekly[0].id
 
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = var.weekly_backup_plan_config.selection_tag_key
-    value = var.weekly_backup_plan_config.selection_tag_value
+  resources = ["*"]
+
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/${var.weekly_backup_plan_config.selection_tag_key}"
+      value = var.weekly_backup_plan_config.selection_tag_value
+    }
+
+    dynamic "string_equals" {
+      for_each = coalesce(var.weekly_backup_plan_config.additional_selection_tags, [])
+      content {
+        key   = "aws:ResourceTag/${string_equals.value.key}"
+        value = string_equals.value.value
+      }
+    }
   }
 }
 
@@ -237,10 +270,21 @@ resource "aws_backup_selection" "monthly" {
   name         = "${local.name_prefix}${var.monthly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.monthly[0].id
 
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = var.monthly_backup_plan_config.selection_tag_key
-    value = var.monthly_backup_plan_config.selection_tag_value
+  resources = ["*"]
+
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/${var.monthly_backup_plan_config.selection_tag_key}"
+      value = var.monthly_backup_plan_config.selection_tag_value
+    }
+
+    dynamic "string_equals" {
+      for_each = coalesce(var.monthly_backup_plan_config.additional_selection_tags, [])
+      content {
+        key   = "aws:ResourceTag/${string_equals.value.key}"
+        value = string_equals.value.value
+      }
+    }
   }
 }
 
@@ -281,10 +325,21 @@ resource "aws_backup_selection" "yearly" {
   name         = "${local.name_prefix}${var.yearly_backup_plan_config.name}_selection"
   plan_id      = aws_backup_plan.yearly[0].id
 
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = var.yearly_backup_plan_config.selection_tag_key
-    value = var.yearly_backup_plan_config.selection_tag_value
+  resources = ["*"]
+
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/${var.yearly_backup_plan_config.selection_tag_key}"
+      value = var.yearly_backup_plan_config.selection_tag_value
+    }
+
+    dynamic "string_equals" {
+      for_each = coalesce(var.yearly_backup_plan_config.additional_selection_tags, [])
+      content {
+        key   = "aws:ResourceTag/${string_equals.value.key}"
+        value = string_equals.value.value
+      }
+    }
   }
 }
 
