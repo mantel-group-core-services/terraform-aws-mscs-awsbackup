@@ -431,9 +431,20 @@ resource "aws_backup_selection" "additional" {
   name         = "${local.name_prefix}${each.value.name}_selection"
   plan_id      = aws_backup_plan.additional_plans[each.key].id
 
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = each.value.selection_tag_key
-    value = each.value.selection_tag_value
+  resources = ["*"]
+
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/${each.value.selection_tag_key}"
+      value = each.value.selection_tag_value
+    }
+
+    dynamic "string_equals" {
+      for_each = coalesce(each.value.additional_selection_tags, [])
+      content {
+        key   = "aws:ResourceTag/${string_equals.value.key}"
+        value = string_equals.value.value
+      }
+    }
   }
 }

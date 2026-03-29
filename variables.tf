@@ -225,6 +225,11 @@ variable "additional_backup_plan_config" {
     selection_tag_key        = string
     selection_tag_value      = string
     start_window             = number
+    additional_selection_tags = optional(list(object({
+      key   = string
+      value = string
+      type  = string
+    })))
   }))
   default = {}
 }
