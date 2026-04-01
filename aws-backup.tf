@@ -79,7 +79,8 @@ resource "aws_backup_plan" "daily" {
     start_window      = var.daily_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
     lifecycle {
-      delete_after = var.daily_backup_plan_config.retention_in_days
+      delete_after       = var.daily_backup_plan_config.retention_in_days
+      cold_storage_after = var.daily_backup_plan_config.cold_storage_after
     }
   }
   dynamic "advanced_backup_setting" {
@@ -134,7 +135,8 @@ resource "aws_backup_plan" "hourly" {
     start_window      = var.hourly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
     lifecycle {
-      delete_after = var.hourly_backup_plan_config.retention_in_days
+      delete_after       = var.hourly_backup_plan_config.retention_in_days
+      cold_storage_after = var.hourly_backup_plan_config.cold_storage_after
     }
   }
   dynamic "advanced_backup_setting" {
@@ -189,7 +191,8 @@ resource "aws_backup_plan" "weekly" {
     start_window      = var.weekly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
     lifecycle {
-      delete_after = var.weekly_backup_plan_config.retention_in_days
+      delete_after       = var.weekly_backup_plan_config.retention_in_days
+      cold_storage_after = var.weekly_backup_plan_config.cold_storage_after
     }
   }
   dynamic "advanced_backup_setting" {
@@ -244,7 +247,8 @@ resource "aws_backup_plan" "monthly" {
     start_window      = var.monthly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
     lifecycle {
-      delete_after = var.monthly_backup_plan_config.retention_in_days
+      delete_after       = var.monthly_backup_plan_config.retention_in_days
+      cold_storage_after = var.monthly_backup_plan_config.cold_storage_after
     }
   }
   dynamic "advanced_backup_setting" {
@@ -299,7 +303,8 @@ resource "aws_backup_plan" "yearly" {
     start_window      = var.yearly_backup_plan_config.start_window
     target_vault_name = aws_backup_vault.main.name
     lifecycle {
-      delete_after = var.yearly_backup_plan_config.retention_in_days
+      delete_after       = var.yearly_backup_plan_config.retention_in_days
+      cold_storage_after = var.yearly_backup_plan_config.cold_storage_after
     }
   }
   dynamic "advanced_backup_setting" {
@@ -405,7 +410,8 @@ resource "aws_backup_plan" "additional_plans" {
     start_window      = each.value.start_window
     target_vault_name = aws_backup_vault.main.name
     lifecycle {
-      delete_after = each.value.retention_in_days
+      delete_after       = each.value.retention_in_days
+      cold_storage_after = each.value.cold_storage_after
     }
   }
   dynamic "advanced_backup_setting" {

@@ -70,6 +70,7 @@ variable "hourly_backup_plan_config" {
     selection_tag_key   = string
     selection_tag_value = string
     start_window        = number
+    cold_storage_after  = optional(number)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -101,6 +102,7 @@ variable "daily_backup_plan_config" {
     selection_tag_key   = string
     selection_tag_value = string
     start_window        = number
+    cold_storage_after  = optional(number)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -132,6 +134,7 @@ variable "weekly_backup_plan_config" {
     selection_tag_key   = string
     selection_tag_value = string
     start_window        = number
+    cold_storage_after  = optional(number)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -163,6 +166,7 @@ variable "monthly_backup_plan_config" {
     selection_tag_key   = string
     selection_tag_value = string
     start_window        = number
+    cold_storage_after  = optional(number)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -194,6 +198,7 @@ variable "yearly_backup_plan_config" {
     selection_tag_key   = string
     selection_tag_value = string
     start_window        = number
+    cold_storage_after  = optional(number)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
@@ -225,6 +230,7 @@ variable "additional_backup_plan_config" {
     selection_tag_key        = string
     selection_tag_value      = string
     start_window             = number
+    cold_storage_after       = optional(number)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
