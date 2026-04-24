@@ -37,30 +37,31 @@ variable "backup_plan_name_prefix" {
 variable "continuous_backup_plan_config" {
   description = "Contains the general configuration of the Continuous AWS Backup Plan."
   type = object({
+    completion_window   = number
     enabled             = bool
     name                = string
-    start_window        = number
-    completion_window   = number
     retention_in_days   = number
+    schedule            = string
     selection_tag_key   = string
     selection_tag_value = string
-    schedule            = string
+    start_window        = number
   })
   default = {
+    completion_window   = 180
     enabled             = true
     name                = "backupContinuous"
-    start_window        = 60
-    completion_window   = 180
     retention_in_days   = 3
+    schedule            = "cron(0 * ? * * *)"
     selection_tag_key   = "backup"
     selection_tag_value = "Continuous"
-    schedule            = "cron(0 * ? * * *)"
+    start_window        = 60
   }
 }
 
 variable "hourly_backup_plan_config" {
   description = "Contains the general configuration of the Hourly AWS Backup Plan."
   type = object({
+    cold_storage_after  = optional(number)
     completion_window   = number
     enabled             = bool
     enable_vss          = bool
@@ -87,11 +88,20 @@ variable "hourly_backup_plan_config" {
     selection_tag_value = "Daily"
     start_window        = 60
   }
+  validation {
+    condition     = var.hourly_backup_plan_config.cold_storage_after == null || var.hourly_backup_plan_config.cold_storage_after >= 90
+    error_message = "cold_storage_after must be at least 90 days when specified."
+  }
+  validation {
+    condition     = var.hourly_backup_plan_config.cold_storage_after == null || var.hourly_backup_plan_config.retention_in_days >= (var.hourly_backup_plan_config.cold_storage_after + 90)
+    error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
+  }
 }
 
 variable "daily_backup_plan_config" {
   description = "Contains the general configuration of the Daily AWS Backup Plan."
   type = object({
+    cold_storage_after  = optional(number)
     completion_window   = number
     enabled             = bool
     enable_vss          = bool
@@ -118,11 +128,20 @@ variable "daily_backup_plan_config" {
     selection_tag_value = "Daily"
     start_window        = 60
   }
+  validation {
+    condition     = var.daily_backup_plan_config.cold_storage_after == null || var.daily_backup_plan_config.cold_storage_after >= 90
+    error_message = "cold_storage_after must be at least 90 days when specified."
+  }
+  validation {
+    condition     = var.daily_backup_plan_config.cold_storage_after == null || var.daily_backup_plan_config.retention_in_days >= (var.daily_backup_plan_config.cold_storage_after + 90)
+    error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
+  }
 }
 
 variable "weekly_backup_plan_config" {
   description = "Contains the general configuration of the Weekly AWS Backup Plan."
   type = object({
+    cold_storage_after  = optional(number)
     completion_window   = number
     enabled             = bool
     enable_vss          = bool
@@ -149,11 +168,20 @@ variable "weekly_backup_plan_config" {
     selection_tag_value = "Weekly"
     start_window        = 60
   }
+  validation {
+    condition     = var.weekly_backup_plan_config.cold_storage_after == null || var.weekly_backup_plan_config.cold_storage_after >= 90
+    error_message = "cold_storage_after must be at least 90 days when specified."
+  }
+  validation {
+    condition     = var.weekly_backup_plan_config.cold_storage_after == null || var.weekly_backup_plan_config.retention_in_days >= (var.weekly_backup_plan_config.cold_storage_after + 90)
+    error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
+  }
 }
 
 variable "monthly_backup_plan_config" {
   description = "Contains the general configuration of the Monthly AWS Backup Plan."
   type = object({
+    cold_storage_after  = optional(number)
     completion_window   = number
     enabled             = bool
     enable_vss          = bool
@@ -180,11 +208,20 @@ variable "monthly_backup_plan_config" {
     selection_tag_value = "Monthly"
     start_window        = 60
   }
+  validation {
+    condition     = var.monthly_backup_plan_config.cold_storage_after == null || var.monthly_backup_plan_config.cold_storage_after >= 90
+    error_message = "cold_storage_after must be at least 90 days when specified."
+  }
+  validation {
+    condition     = var.monthly_backup_plan_config.cold_storage_after == null || var.monthly_backup_plan_config.retention_in_days >= (var.monthly_backup_plan_config.cold_storage_after + 90)
+    error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
+  }
 }
 
 variable "yearly_backup_plan_config" {
   description = "Contains the general configuration of the Yearly AWS Backup Plan."
   type = object({
+    cold_storage_after  = optional(number)
     completion_window   = number
     enabled             = bool
     enable_vss          = bool
@@ -211,11 +248,20 @@ variable "yearly_backup_plan_config" {
     selection_tag_value = "Yearly"
     start_window        = 60
   }
+  validation {
+    condition     = var.yearly_backup_plan_config.cold_storage_after == null || var.yearly_backup_plan_config.cold_storage_after >= 90
+    error_message = "cold_storage_after must be at least 90 days when specified."
+  }
+  validation {
+    condition     = var.yearly_backup_plan_config.cold_storage_after == null || var.yearly_backup_plan_config.retention_in_days >= (var.yearly_backup_plan_config.cold_storage_after + 90)
+    error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
+  }
 }
 
 variable "additional_backup_plan_config" {
   description = "Contains the general configuration of an AWS Backup Plan. This can be used to set any number of arbitrary additional Backup Plans."
   type = map(object({
+    cold_storage_after       = optional(number)
     completion_window        = number
     enable_continuous_backup = bool
     enable_vss               = bool
@@ -225,8 +271,27 @@ variable "additional_backup_plan_config" {
     selection_tag_key        = string
     selection_tag_value      = string
     start_window             = number
+    additional_selection_tags = optional(list(object({
+      key   = string
+      value = string
+      type  = string
+    })))
   }))
   default = {}
+  validation {
+    condition = alltrue([
+      for k, v in var.additional_backup_plan_config :
+      v.cold_storage_after == null || v.cold_storage_after >= 90
+    ])
+    error_message = "cold_storage_after must be at least 90 days when specified."
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.additional_backup_plan_config :
+      v.cold_storage_after == null || v.retention_in_days >= (v.cold_storage_after + 90)
+    ])
+    error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
+  }
 }
 
 variable "unscoped_backup_plan_config" {
