@@ -89,11 +89,11 @@ variable "hourly_backup_plan_config" {
     start_window        = 60
   }
   validation {
-    condition     = var.hourly_backup_plan_config.cold_storage_after == null || var.hourly_backup_plan_config.cold_storage_after >= 90
+    condition     = var.hourly_backup_plan_config.cold_storage_after == null ? true : var.hourly_backup_plan_config.cold_storage_after >= 90
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.hourly_backup_plan_config.cold_storage_after == null || var.hourly_backup_plan_config.retention_in_days >= (var.hourly_backup_plan_config.cold_storage_after + 90)
+    condition     = var.hourly_backup_plan_config.cold_storage_after == null ? true : var.hourly_backup_plan_config.retention_in_days >= (var.hourly_backup_plan_config.cold_storage_after + 90)
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -129,11 +129,11 @@ variable "daily_backup_plan_config" {
     start_window        = 60
   }
   validation {
-    condition     = var.daily_backup_plan_config.cold_storage_after == null || var.daily_backup_plan_config.cold_storage_after >= 90
+    condition     = var.daily_backup_plan_config.cold_storage_after == null ? true : var.daily_backup_plan_config.cold_storage_after >= 90
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.daily_backup_plan_config.cold_storage_after == null || var.daily_backup_plan_config.retention_in_days >= (var.daily_backup_plan_config.cold_storage_after + 90)
+    condition     = var.daily_backup_plan_config.cold_storage_after == null ? true : var.daily_backup_plan_config.retention_in_days >= (var.daily_backup_plan_config.cold_storage_after + 90)
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -169,11 +169,11 @@ variable "weekly_backup_plan_config" {
     start_window        = 60
   }
   validation {
-    condition     = var.weekly_backup_plan_config.cold_storage_after == null || var.weekly_backup_plan_config.cold_storage_after >= 90
+    condition     = var.weekly_backup_plan_config.cold_storage_after == null ? true : var.weekly_backup_plan_config.cold_storage_after >= 90
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.weekly_backup_plan_config.cold_storage_after == null || var.weekly_backup_plan_config.retention_in_days >= (var.weekly_backup_plan_config.cold_storage_after + 90)
+    condition     = var.weekly_backup_plan_config.cold_storage_after == null ? true : var.weekly_backup_plan_config.retention_in_days >= (var.weekly_backup_plan_config.cold_storage_after + 90)
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -209,11 +209,11 @@ variable "monthly_backup_plan_config" {
     start_window        = 60
   }
   validation {
-    condition     = var.monthly_backup_plan_config.cold_storage_after == null || var.monthly_backup_plan_config.cold_storage_after >= 90
+    condition     = var.monthly_backup_plan_config.cold_storage_after == null ? true : var.monthly_backup_plan_config.cold_storage_after >= 90
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.monthly_backup_plan_config.cold_storage_after == null || var.monthly_backup_plan_config.retention_in_days >= (var.monthly_backup_plan_config.cold_storage_after + 90)
+    condition     = var.monthly_backup_plan_config.cold_storage_after == null ? true : var.monthly_backup_plan_config.retention_in_days >= (var.monthly_backup_plan_config.cold_storage_after + 90)
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -249,11 +249,11 @@ variable "yearly_backup_plan_config" {
     start_window        = 60
   }
   validation {
-    condition     = var.yearly_backup_plan_config.cold_storage_after == null || var.yearly_backup_plan_config.cold_storage_after >= 90
+    condition     = var.yearly_backup_plan_config.cold_storage_after == null ? true : var.yearly_backup_plan_config.cold_storage_after >= 90
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.yearly_backup_plan_config.cold_storage_after == null || var.yearly_backup_plan_config.retention_in_days >= (var.yearly_backup_plan_config.cold_storage_after + 90)
+    condition     = var.yearly_backup_plan_config.cold_storage_after == null ? true : var.yearly_backup_plan_config.retention_in_days >= (var.yearly_backup_plan_config.cold_storage_after + 90)
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -281,14 +281,14 @@ variable "additional_backup_plan_config" {
   validation {
     condition = alltrue([
       for k, v in var.additional_backup_plan_config :
-      v.cold_storage_after == null || v.cold_storage_after >= 90
+      v.cold_storage_after == null ? true : v.cold_storage_after >= 90
     ])
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
     condition = alltrue([
       for k, v in var.additional_backup_plan_config :
-      v.cold_storage_after == null || v.retention_in_days >= (v.cold_storage_after + 90)
+      v.cold_storage_after == null ? true : v.retention_in_days >= (v.cold_storage_after + 90)
     ])
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
