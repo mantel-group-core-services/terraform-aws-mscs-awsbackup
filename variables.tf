@@ -37,63 +37,44 @@ variable "backup_plan_name_prefix" {
 variable "continuous_backup_plan_config" {
   description = "Contains the general configuration of the Continuous AWS Backup Plan."
   type = object({
-    completion_window   = number
-    enabled             = bool
-    name                = string
-    retention_in_days   = number
-    schedule            = string
-    selection_tag_key   = string
-    selection_tag_value = string
-    start_window        = number
+    completion_window   = optional(number, 180)
+    enabled             = optional(bool, true)
+    name                = optional(string, "backupContinuous")
+    retention_in_days   = optional(number, 3)
+    schedule            = optional(string, "cron(0 * ? * * *)")
+    selection_tag_key   = optional(string, "backup")
+    selection_tag_value = optional(string, "Continuous")
+    start_window        = optional(number, 60)
   })
-  default = {
-    completion_window   = 180
-    enabled             = true
-    name                = "backupContinuous"
-    retention_in_days   = 3
-    schedule            = "cron(0 * ? * * *)"
-    selection_tag_key   = "backup"
-    selection_tag_value = "Continuous"
-    start_window        = 60
-  }
+  default = {}
 }
 
 variable "hourly_backup_plan_config" {
   description = "Contains the general configuration of the Hourly AWS Backup Plan."
   type = object({
     cold_storage_after  = optional(number)
-    completion_window   = number
-    enabled             = bool
-    enable_vss          = bool
-    name                = string
-    retention_in_days   = number
-    schedule            = string
-    selection_tag_key   = string
-    selection_tag_value = string
-    start_window        = number
+    completion_window   = optional(number, 180)
+    enabled             = optional(bool, true)
+    enable_vss          = optional(bool, false)
+    name                = optional(string, "backupHourly")
+    retention_in_days   = optional(number, 14)
+    schedule            = optional(string, "cron(0 * ? * * *)")
+    selection_tag_key   = optional(string, "backup")
+    selection_tag_value = optional(string, "Daily")
+    start_window        = optional(number, 60)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
       type  = string
     })))
   })
-  default = {
-    completion_window   = 180
-    enabled             = true
-    enable_vss          = false
-    name                = "backupHourly"
-    retention_in_days   = 14
-    schedule            = "cron(0 * ? * * *)"
-    selection_tag_key   = "backup"
-    selection_tag_value = "Daily"
-    start_window        = 60
-  }
+  default = {}
   validation {
-    condition     = var.hourly_backup_plan_config.cold_storage_after == null ? true : var.hourly_backup_plan_config.cold_storage_after >= 90
+    condition     = !var.hourly_backup_plan_config.enabled ? true : (var.hourly_backup_plan_config.cold_storage_after == null ? true : var.hourly_backup_plan_config.cold_storage_after >= 90)
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.hourly_backup_plan_config.cold_storage_after == null ? true : var.hourly_backup_plan_config.retention_in_days >= (var.hourly_backup_plan_config.cold_storage_after + 90)
+    condition     = !var.hourly_backup_plan_config.enabled ? true : (var.hourly_backup_plan_config.cold_storage_after == null ? true : var.hourly_backup_plan_config.retention_in_days >= (var.hourly_backup_plan_config.cold_storage_after + 90))
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -102,38 +83,28 @@ variable "daily_backup_plan_config" {
   description = "Contains the general configuration of the Daily AWS Backup Plan."
   type = object({
     cold_storage_after  = optional(number)
-    completion_window   = number
-    enabled             = bool
-    enable_vss          = bool
-    name                = string
-    retention_in_days   = number
-    schedule            = string
-    selection_tag_key   = string
-    selection_tag_value = string
-    start_window        = number
+    completion_window   = optional(number, 180)
+    enabled             = optional(bool, true)
+    enable_vss          = optional(bool, false)
+    name                = optional(string, "backupDaily")
+    retention_in_days   = optional(number, 35)
+    schedule            = optional(string, "cron(0 10 ? * * *)")
+    selection_tag_key   = optional(string, "backup")
+    selection_tag_value = optional(string, "Daily")
+    start_window        = optional(number, 60)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
       type  = string
     })))
   })
-  default = {
-    completion_window   = 180
-    enabled             = true
-    enable_vss          = false
-    retention_in_days   = 35
-    name                = "backupDaily"
-    schedule            = "cron(0 10 ? * * *)"
-    selection_tag_key   = "backup"
-    selection_tag_value = "Daily"
-    start_window        = 60
-  }
+  default = {}
   validation {
-    condition     = var.daily_backup_plan_config.cold_storage_after == null ? true : var.daily_backup_plan_config.cold_storage_after >= 90
+    condition     = !var.daily_backup_plan_config.enabled ? true : (var.daily_backup_plan_config.cold_storage_after == null ? true : var.daily_backup_plan_config.cold_storage_after >= 90)
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.daily_backup_plan_config.cold_storage_after == null ? true : var.daily_backup_plan_config.retention_in_days >= (var.daily_backup_plan_config.cold_storage_after + 90)
+    condition     = !var.daily_backup_plan_config.enabled ? true : (var.daily_backup_plan_config.cold_storage_after == null ? true : var.daily_backup_plan_config.retention_in_days >= (var.daily_backup_plan_config.cold_storage_after + 90))
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -142,38 +113,28 @@ variable "weekly_backup_plan_config" {
   description = "Contains the general configuration of the Weekly AWS Backup Plan."
   type = object({
     cold_storage_after  = optional(number)
-    completion_window   = number
-    enabled             = bool
-    enable_vss          = bool
-    name                = string
-    retention_in_days   = number
-    schedule            = string
-    selection_tag_key   = string
-    selection_tag_value = string
-    start_window        = number
+    completion_window   = optional(number, 480)
+    enabled             = optional(bool, true)
+    enable_vss          = optional(bool, false)
+    name                = optional(string, "backupWeekly")
+    retention_in_days   = optional(number, 105)
+    schedule            = optional(string, "cron(0 10 ? * FRI *)")
+    selection_tag_key   = optional(string, "backup")
+    selection_tag_value = optional(string, "Weekly")
+    start_window        = optional(number, 60)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
       type  = string
     })))
   })
-  default = {
-    completion_window   = 480
-    enabled             = true
-    enable_vss          = false
-    name                = "backupWeekly"
-    retention_in_days   = 105
-    schedule            = "cron(0 10 ? * FRI *)"
-    selection_tag_key   = "backup"
-    selection_tag_value = "Weekly"
-    start_window        = 60
-  }
+  default = {}
   validation {
-    condition     = var.weekly_backup_plan_config.cold_storage_after == null ? true : var.weekly_backup_plan_config.cold_storage_after >= 90
+    condition     = !var.weekly_backup_plan_config.enabled ? true : (var.weekly_backup_plan_config.cold_storage_after == null ? true : var.weekly_backup_plan_config.cold_storage_after >= 90)
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.weekly_backup_plan_config.cold_storage_after == null ? true : var.weekly_backup_plan_config.retention_in_days >= (var.weekly_backup_plan_config.cold_storage_after + 90)
+    condition     = !var.weekly_backup_plan_config.enabled ? true : (var.weekly_backup_plan_config.cold_storage_after == null ? true : var.weekly_backup_plan_config.retention_in_days >= (var.weekly_backup_plan_config.cold_storage_after + 90))
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -182,38 +143,28 @@ variable "monthly_backup_plan_config" {
   description = "Contains the general configuration of the Monthly AWS Backup Plan."
   type = object({
     cold_storage_after  = optional(number)
-    completion_window   = number
-    enabled             = bool
-    enable_vss          = bool
-    name                = string
-    retention_in_days   = number
-    schedule            = string
-    selection_tag_key   = string
-    selection_tag_value = string
-    start_window        = number
+    completion_window   = optional(number, 480)
+    enabled             = optional(bool, true)
+    enable_vss          = optional(bool, false)
+    name                = optional(string, "backupMonthly")
+    retention_in_days   = optional(number, 455)
+    schedule            = optional(string, "cron(0 19 1 * ? *)")
+    selection_tag_key   = optional(string, "backup")
+    selection_tag_value = optional(string, "Monthly")
+    start_window        = optional(number, 60)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
       type  = string
     })))
   })
-  default = {
-    completion_window   = 480
-    enabled             = true
-    enable_vss          = false
-    name                = "backupMonthly"
-    retention_in_days   = 455
-    schedule            = "cron(0 19 1 * ? *)"
-    selection_tag_key   = "backup"
-    selection_tag_value = "Monthly"
-    start_window        = 60
-  }
+  default = {}
   validation {
-    condition     = var.monthly_backup_plan_config.cold_storage_after == null ? true : var.monthly_backup_plan_config.cold_storage_after >= 90
+    condition     = !var.monthly_backup_plan_config.enabled ? true : (var.monthly_backup_plan_config.cold_storage_after == null ? true : var.monthly_backup_plan_config.cold_storage_after >= 90)
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.monthly_backup_plan_config.cold_storage_after == null ? true : var.monthly_backup_plan_config.retention_in_days >= (var.monthly_backup_plan_config.cold_storage_after + 90)
+    condition     = !var.monthly_backup_plan_config.enabled ? true : (var.monthly_backup_plan_config.cold_storage_after == null ? true : var.monthly_backup_plan_config.retention_in_days >= (var.monthly_backup_plan_config.cold_storage_after + 90))
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -222,38 +173,28 @@ variable "yearly_backup_plan_config" {
   description = "Contains the general configuration of the Yearly AWS Backup Plan."
   type = object({
     cold_storage_after  = optional(number)
-    completion_window   = number
-    enabled             = bool
-    enable_vss          = bool
-    name                = string
-    retention_in_days   = number
-    schedule            = string
-    selection_tag_key   = string
-    selection_tag_value = string
-    start_window        = number
+    completion_window   = optional(number, 480)
+    enabled             = optional(bool, true)
+    enable_vss          = optional(bool, false)
+    name                = optional(string, "backupYearly")
+    retention_in_days   = optional(number, 765)
+    schedule            = optional(string, "cron(0 19 1 1 ? *)")
+    selection_tag_key   = optional(string, "backup")
+    selection_tag_value = optional(string, "Yearly")
+    start_window        = optional(number, 60)
     additional_selection_tags = optional(list(object({
       key   = string
       value = string
       type  = string
     })))
   })
-  default = {
-    completion_window   = 480
-    enabled             = true
-    enable_vss          = false
-    name                = "backupYearly"
-    retention_in_days   = 765
-    schedule            = "cron(0 19 1 1 ? *)"
-    selection_tag_key   = "backup"
-    selection_tag_value = "Yearly"
-    start_window        = 60
-  }
+  default = {}
   validation {
-    condition     = var.yearly_backup_plan_config.cold_storage_after == null ? true : var.yearly_backup_plan_config.cold_storage_after >= 90
+    condition     = !var.yearly_backup_plan_config.enabled ? true : (var.yearly_backup_plan_config.cold_storage_after == null ? true : var.yearly_backup_plan_config.cold_storage_after >= 90)
     error_message = "cold_storage_after must be at least 90 days when specified."
   }
   validation {
-    condition     = var.yearly_backup_plan_config.cold_storage_after == null ? true : var.yearly_backup_plan_config.retention_in_days >= (var.yearly_backup_plan_config.cold_storage_after + 90)
+    condition     = !var.yearly_backup_plan_config.enabled ? true : (var.yearly_backup_plan_config.cold_storage_after == null ? true : var.yearly_backup_plan_config.retention_in_days >= (var.yearly_backup_plan_config.cold_storage_after + 90))
     error_message = "retention_in_days must be at least 90 days after cold_storage_after (cold_storage_after + 90)."
   }
 }
@@ -297,27 +238,17 @@ variable "additional_backup_plan_config" {
 variable "unscoped_backup_plan_config" {
   description = "Contains the configuration of the Unscoped backup plan for untagged resources."
   type = object({
-    completion_window        = number
-    enabled                  = bool
-    enable_continuous_backup = bool
-    enable_vss               = bool
-    name                     = string
-    retention_in_days        = number
-    schedule                 = string
-    selection_tag_key        = string
-    start_window             = number
+    completion_window        = optional(number, 180)
+    enabled                  = optional(bool, true)
+    enable_continuous_backup = optional(bool, false)
+    enable_vss               = optional(bool, false)
+    name                     = optional(string, "mgms_unscoped_backup_plan")
+    retention_in_days        = optional(number, 14)
+    schedule                 = optional(string, "cron(0 10 ? * * *)")
+    selection_tag_key        = optional(string, "backup")
+    start_window             = optional(number, 60)
   })
-  default = {
-    completion_window        = 180
-    enabled                  = true
-    enable_continuous_backup = false
-    enable_vss               = false
-    name                     = "mgms_unscoped_backup_plan"
-    retention_in_days        = 14
-    schedule                 = "cron(0 10 ? * * *)"
-    selection_tag_key        = "backup"
-    start_window             = 60
-  }
+  default = {}
 }
 
 variable "service_role_managed_policies" {
