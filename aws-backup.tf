@@ -404,11 +404,12 @@ resource "aws_backup_plan" "additional_plans" {
 
   name = "${local.name_prefix}${each.value.name}"
   rule {
-    completion_window = each.value.completion_window
-    rule_name         = "${local.name_prefix}${each.value.name}"
-    schedule          = each.value.schedule
-    start_window      = each.value.start_window
-    target_vault_name = aws_backup_vault.main.name
+    completion_window        = each.value.completion_window
+    enable_continuous_backup = each.value.enable_continuous_backup
+    rule_name                = "${local.name_prefix}${each.value.name}"
+    schedule                 = each.value.schedule
+    start_window             = each.value.start_window
+    target_vault_name        = aws_backup_vault.main.name
     lifecycle {
       cold_storage_after = each.value.cold_storage_after
       delete_after       = each.value.retention_in_days
